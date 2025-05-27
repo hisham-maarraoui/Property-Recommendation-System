@@ -45,9 +45,7 @@ def extract_bedrooms(bed_str):
     return int(match.group()) if match else 0
 
 def prepare_test_cases(appraisals, properties):
-    """Prepare test cases from appraisals and properties data.
-    The comps in each appraisal are the ground truth, and the properties list is the candidate pool for recommendations.
-    """
+    """Prepare test cases from appraisals and properties data."""
     processor = PropertyDataProcessor()
     
     # Preprocess all properties first, filter out None results
@@ -75,7 +73,7 @@ def prepare_test_cases(appraisals, properties):
                 logger.info(f"  Description: {comp.get('description', '')}")
                 logger.info(f"  Public Remarks: {comp.get('public_remarks', '')}")
         
-        # Process comps as ground truth
+        # Process comps
         processed_comps = []
         for comp in comps:
             # Try to match comp with existing property
@@ -107,7 +105,6 @@ def prepare_test_cases(appraisals, properties):
                 logger.info(f"  Property Type: {comp.get('property_type', '')}")
                 logger.info(f"  Structure Type: {comp.get('structure_type', '')}")
         
-        # Use the processed properties as the candidate pool for recommendations
         test_cases.append((processed_subject, processed_comps, processed_properties))
     
     return test_cases

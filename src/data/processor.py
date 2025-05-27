@@ -153,20 +153,16 @@ class PropertyDataProcessor:
             if field in data and data[field]:
                 try:
                     price_str = str(data[field])
-                    logger.info(f"Checking field '{field}' with value: {price_str}")
                     # Remove currency symbols and commas
                     price_str = re.sub(r'[^\d.]', '', price_str)
                     price = float(price_str)
                     
                     # Basic validation
                     if 1000 <= price <= 1000000000:  # Reasonable price range
-                        logger.info(f"Valid price found: {price}")
                         return price
                 except (ValueError, TypeError):
-                    logger.warning(f"Failed to convert '{field}' value to float: {price_str}")
                     continue
         
-        logger.warning("No valid price found in the data.")
         return 0.0
 
     def _extract_numeric_feature(self, data: Dict, fields: List[str], default: float = 0.0) -> float:
@@ -182,31 +178,6 @@ class PropertyDataProcessor:
                 except (ValueError, TypeError):
                     continue
         return default
-
-    def _extract_bathrooms(self, data: Dict) -> float:
-        """Extract and clean bathroom count, handling formats like '2:1'."""
-        # Try full_baths and half_baths first
-        full_baths = self._extract_numeric_feature(data, ['full_baths'], 0.0)
-        half_baths = self._extract_numeric_feature(data, ['half_baths'], 0.0)
-        if full_baths > 0 or half_baths > 0:
-            return full_baths + (half_baths * 0.5)
-        
-        # Try other bathroom fields
-        for field in ['bathrooms', 'num_baths', 'baths', 'bath_count']:
-            if field in data and data[field]:
-                try:
-                    value = str(data[field])
-                    # Handle format like "2:1"
-                    if ':' in value:
-                        full, half = value.split(':')
-                        return float(full) + (float(half) * 0.5)
-                    # Handle regular numeric format
-                    cleaned = re.sub(r'[^\d.]', '', value)
-                    if cleaned:
-                        return float(cleaned)
-                except (ValueError, TypeError):
-                    continue
-        return 0.0
 
     def preprocess_property(self, property_data: Dict) -> Dict:
         """Enhanced property preprocessing with better feature extraction and validation."""
@@ -226,13 +197,13 @@ class PropertyDataProcessor:
                 'postal_code': str(property_data.get('postal_code', '')).strip().lower(),
                 'latitude': self._extract_numeric_feature(property_data, ['latitude', 'lat']),
                 'longitude': self._extract_numeric_feature(property_data, ['longitude', 'long', 'lng']),
-                'bedrooms': int(self._extract_numeric_feature(property_data, ['bedrooms', 'num_beds', 'beds', 'bed_count'])),
-                'bathrooms': self._extract_bathrooms(property_data),
+                'bedrooms': int(self._extract_numeric_feature(property_data, ['bedrooms', 'num_beds', 'beds'])),
+                'bathrooms': self._extract_numeric_feature(property_data, ['bathrooms', 'num_baths', 'baths']),
                 'gla': self._extract_numeric_feature(property_data, ['gla', 'size', 'square_feet', 'sqft']),
-                'lot_size': self._extract_numeric_feature(property_data, ['lot_size', 'lot_sqft', 'land_size', 'lot_size_sf']),
+                'lot_size': self._extract_numeric_feature(property_data, ['lot_size', 'lot_sqft', 'land_size']),
                 'price': self._extract_price(property_data),
                 'year_built': int(self._extract_numeric_feature(property_data, ['year_built', 'construction_year'])),
-                'property_type': str(property_data.get('property_type', property_data.get('structure_type', property_data.get('prop_type', '')))).strip().lower(),
+                'property_type': str(property_data.get('property_type', property_data.get('structure_type', ''))).strip().lower(),
                 'style': str(property_data.get('style', '')).strip().lower(),
                 'close_date': str(property_data.get('close_date', '')).strip(),
                 'description': str(property_data.get('description', property_data.get('public_remarks', ''))).strip()
@@ -256,7 +227,7 @@ class PropertyDataProcessor:
 
             # Ensure all features used in feedback/modeling are numeric
             numeric_features = [
-                'gla', 'bedrooms', 'price', 'location', 'year_built', 'lot_size'
+                'gla', 'bedrooms', 'price', 'location', 'property_type', 'year_built', 'lot_size'
             ]
             for feature in numeric_features:
                 val = processed.get(feature, 0)
