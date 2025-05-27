@@ -1,0 +1,33 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="property_recommendation_system",
+    version="0.1",
+    packages=find_packages(),
+    install_requires=[
+        "numpy",
+        "pandas",
+        "scikit-learn",
+        "torch",
+        "transformers",
+        "nltk",
+        "spacy",
+        "matplotlib",
+        "seaborn",
+        "plotly",
+        "dash",
+        "dash-bootstrap-components",
+        "flask",
+        "flask-cors",
+        "python-dotenv",
+        "requests",
+        "tqdm",
+        "joblib",
+        "pytest",
+        "pytest-cov",
+        "black",
+        "flake8",
+        "mypy",
+        "pre-commit"
+    ],
+) 

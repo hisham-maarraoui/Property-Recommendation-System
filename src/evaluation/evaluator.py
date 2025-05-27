@@ -1,6 +1,6 @@
 from typing import Dict, List, Tuple
 import logging
-from models.recommender import PropertyRecommender
+from src.models.recommender import PropertyRecommender
 import numpy as np
 from datetime import datetime
 import re

@@ -1,3 +1,68 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0967880910d364354e80775f23a5272855f6776b52b0cc7ac797c29f0eeff6b2
-size 1523
+{
+  "feedback_entries": [
+    {
+      "timestamp": "2025-05-18T23:34:38.960271",
+      "subject_id": "1",
+      "comp_id": "252737",
+      "rating": 5,
+      "comments": "Excellent match"
+    },
+    {
+      "timestamp": "2025-05-18T23:35:16.092453",
+      "subject_id": "1",
+      "comp_id": "661935",
+      "rating": 5,
+      "comments": "Excellent match"
+    },
+    {
+      "timestamp": "2025-05-18T23:36:04.711425",
+      "subject_id": "1",
+      "comp_id": "3",
+      "rating": 5,
+      "comments": "Excellent match"
+    },
+    {
+      "timestamp": "2025-05-18T23:38:05.684907",
+      "subject_id": "1",
+      "comp_id": "3",
+      "rating": 5,
+      "comments": "Excellent match"
+    },
+    {
+      "timestamp": "2025-05-18T23:39:46.156469",
+      "subject_id": "398829",
+      "comp_id": "61852",
+      "rating": 5,
+      "comments": "Excellent match"
+    }
+  ],
+  "model_updates": [
+    {
+      "timestamp": "2025-05-18T23:39:46.272285",
+      "num_samples": 1,
+      "feature_weights": {
+        "gla": 0.25,
+        "bedrooms": 0.15,
+        "price": 0.2,
+        "location": 0.2,
+        "property_type": 0.1,
+        "year_built": 0.05,
+        "lot_size": 0.05
+      }
+    },
+    {
+      "timestamp": "2025-05-18T23:39:47.282085",
+      "num_samples": 1,
+      "feature_weights": {
+        "gla": 0.25,
+        "bedrooms": 0.15,
+        "price": 0.2,
+        "location": 0.2,
+        "property_type": 0.1,
+        "year_built": 0.05,
+        "lot_size": 0.05
+      }
+    }
+  ],
+  "feature_weights_history": []
+}
